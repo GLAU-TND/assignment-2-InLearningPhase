@@ -17,6 +17,11 @@ public class Node {
         this.next = null;
     }
 
+    public Node(Student data, Node next) {
+        this.data = data;
+        this.next = next;
+    }
+
     public Student getData() {
         return data;
     }
@@ -33,13 +38,4 @@ public class Node {
         this.next = next;
     }
 
-    public Node(Student data, Node next) {
-        this.data = data;
-        this.next = next;
-    }
-
-    @Override
-    public String toString() {
-        return this.getData().toString();
-    }
 }
