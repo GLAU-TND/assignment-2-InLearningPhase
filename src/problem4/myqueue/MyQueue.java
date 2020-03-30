@@ -8,69 +8,130 @@ package problem4.myqueue;
 // to create queue to store pre - order successor
 
 import problem1.node.TreeNode;
-import problem3.node.Node;
 
 public class MyQueue {
-    private Node rear;
-    private Node front;
+
+    private Node front, end, tmp;
     private int size;
+
 
     public MyQueue() {
         front = null;
-        rear = null;
+        end = null;
+        tmp = null;
         size = 0;
     }
 
-    //Custom Enqueue method that takes root of the tree as parameter.
-    public void enqueue(TreeNode root) {
-        (root);
-        String[] data = preOrderString.toString().split(" ");
-        for (int i = 0; i < data.length; i++) {
-            Node node = new Node(Integer.parseInt(data[i]));
-            if (front == null) {
-                rear = node;
-                front = node;
-                size++;
-            } else {
-                rear.setNext(node);
-                rear = node;
-                size++;
-            }
+    public int getSize(MyQueue queue) {
+        queue.tmp = queue.front;
+        while (queue.tmp != null) {
+            ++size;
+            queue.tmp = queue.tmp.getNext();
         }
+        queue.tmp = queue.front;
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 
 
-    public void printQueue() {
-        Node temp = this.front.getNext();
-        for (int i = 0; i < this.size - 1; i++) {
-            if (i != this.size - 2) {
-                System.out.print(temp.getData() + "--->");
-                temp = temp.getNext();
-            } else {
-                System.out.println(temp.getData());
-            }
+    public Node getFront() {
+        return front;
+    }
+
+    public void setFront(Node front) {
+        this.front = front;
+    }
+
+    public Node getEnd() {
+        return end;
+    }
+
+    public void setEnd(Node end) {
+        this.end = end;
+    }
+
+    public Node getTmp() {
+        return tmp;
+    }
+
+    public void setTmp(Node tmp) {
+        this.tmp = tmp;
+    }
+    public void queuePrint(MyQueue queue) {
+        while (queue.tmp != null) {
+
+            System.out.print(queue.tmp.getNode().getData() + ",");
+            queue.tmp = queue.tmp.getNext();
         }
+        System.out.println("\b");
+        queue.tmp = queue.front;
+    }
+
+    public void enqueue(Node node) {
+
+        if (front == null) {
+            tmp = front = end = node;
+        } else {
+            while (tmp.getNext() != null) {
+                tmp = tmp.getNext();
+            }
+            end = node;
+            tmp.setNext(node);
+            tmp = front;
+        }
+    }
+    //preorder
+    public void preOrder(TreeNode node) {
+        if (node == null) {
+            return;
+        }
+
+        enqueue(new Node(node));
+        preOrder(node.getLeft());
+        preOrder(node.getRight());
+    }
+
+
+    public void printSuccessor(int data) {
+
+        tmp = front;
+        while (tmp.getNode().getData() != data && tmp != null) {
+            tmp = tmp.getNext();
+        }
+        try {
+            assert tmp != null;
+            System.out.println(tmp.getNext().getNode().getData());
+        } catch (NullPointerException ignore) {
+            System.out.println("No preorder Successor found");
+        }
+
     }
 
 }
 
-}
-
-public class Node {
-    private int data;
+class Node {
+    private TreeNode node;
     private Node next;
 
     public Node(int data) {
-        this.data = data;
+        node = new TreeNode(data);
         next = null;
     }
 
-    public int getData() {
-        return data;
+    public Node(TreeNode treenode) {
+        node = treenode;
+        next = null;
     }
 
-    public void setData(int data) {
-        this.data = data;
+    public TreeNode getNode() {
+        return node;
+    }
+
+    public void setNode(TreeNode node) {
+        this.node = node;
     }
 
     public Node getNext() {
@@ -82,3 +143,6 @@ public class Node {
     }
 
 }
+
+
+
